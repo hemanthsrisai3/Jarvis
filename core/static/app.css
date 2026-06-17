@@ -1,0 +1,739 @@
+:root {
+    --bg-dark: #070a13;
+    --bg-panel: rgba(13, 21, 38, 0.7);
+    --border-color: rgba(0, 210, 255, 0.25);
+    --border-glow: rgba(0, 210, 255, 0.5);
+    --primary-blue: #00d2ff;
+    --secondary-blue: #0066ff;
+    --glow-color: rgba(0, 210, 255, 0.4);
+    --text-primary: #e2f5ff;
+    --text-secondary: #8ab6d6;
+    --code-color: #00e5ff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    height: 100vh;
+    overflow: hidden;
+    background-image: 
+        radial-gradient(circle at 50% 30%, rgba(0, 102, 255, 0.15) 0%, transparent 60%),
+        linear-gradient(to bottom, #05070c 0%, #0a0e1a 100%);
+}
+
+/* Base Layout */
+.jarvis-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 320px;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 10;
+}
+
+.sidebar-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--primary-blue);
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary-blue);
+    animation: beacon 2s infinite ease-in-out;
+}
+
+.tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    letter-spacing: 2px;
+    margin: 15px 0 10px 0;
+    opacity: 0.8;
+}
+
+.sys-monitors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.monitor-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.monitor-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.15);
+}
+
+.monitor-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.progress-bar-container {
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+    box-shadow: 0 0 8px var(--primary-blue);
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.1, 0.8, 0.25, 1);
+}
+
+.monitor-val {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: var(--primary-blue);
+    align-self: flex-end;
+}
+
+.session-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px;
+}
+
+/* Custom Scrollbar for sidebar sessions list */
+.session-list::-webkit-scrollbar {
+    width: 4px;
+}
+.session-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.session-item {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 210, 255, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease;
+}
+
+.session-item:hover, .session-item.active {
+    background: rgba(0, 210, 255, 0.08);
+    border-color: var(--primary-blue);
+    color: var(--text-primary);
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.1);
+}
+
+/* Active Alerts List */
+.alerts-list {
+    max-height: 140px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-right: 4px;
+}
+
+.alerts-list::-webkit-scrollbar {
+    width: 4px;
+}
+.alerts-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: rgba(0, 210, 255, 0.03);
+    border: 1px solid rgba(0, 210, 255, 0.15);
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--text-primary);
+    box-shadow: 0 0 4px rgba(0, 210, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.alert-item:hover {
+    border-color: var(--primary-blue);
+    background: rgba(0, 210, 255, 0.06);
+}
+
+.alert-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    max-width: 75%;
+}
+
+.alert-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+.alert-time {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.alert-abort-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 0, 90, 0.4);
+    color: #ff3366;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.alert-abort-btn:hover {
+    background: rgba(255, 0, 90, 0.15);
+    border-color: #ff3366;
+    box-shadow: 0 0 6px rgba(255, 51, 102, 0.25);
+}
+
+.sidebar-footer {
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 0, 90, 0.3);
+    color: #ff3366;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.footer-btn:hover {
+    background: rgba(255, 0, 90, 0.1);
+    border-color: #ff3366;
+    box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
+}
+
+/* Main Interface */
+.main-interface {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+.header-status {
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(7, 10, 19, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    backdrop-filter: blur(8px);
+}
+
+.system-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+}
+
+.status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-indicator.online {
+    background-color: var(--primary-blue);
+    box-shadow: 0 0 6px var(--primary-blue);
+}
+
+.controls-panel {
+    display: flex;
+    gap: 15px;
+}
+
+.control-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-family: 'Orbitron', sans-serif;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover, .control-btn.active {
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.2);
+}
+
+/* Stage Area with the Hologram & Central Core Sphere */
+.core-stage {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hologram-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center;
+    perspective: 500px;
+    transform: rotateX(60deg) translateY(-20%);
+    opacity: 0.6;
+    z-index: 1;
+}
+
+/* Spherical Core Orbits */
+.core-orbit {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 210, 255, 0.15);
+}
+
+.outer-ring {
+    width: 280px;
+    height: 280px;
+    border-color: rgba(0, 210, 255, 0.1);
+    animation: rotateCW 25s linear infinite;
+}
+
+.mid-ring {
+    width: 220px;
+    height: 220px;
+    border-style: dotted;
+    border-color: rgba(0, 210, 255, 0.2);
+    animation: rotateCCW 18s linear infinite;
+}
+
+.inner-ring {
+    width: 170px;
+    height: 170px;
+    border-color: rgba(0, 210, 255, 0.3);
+    border-width: 2px;
+    animation: rotateCW 10s linear infinite;
+}
+
+/* The Pulsing Core Sphere */
+.jarvis-core {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle at 35% 35%, #99f2ff 0%, #00bfff 30%, #0033aa 70%, #001144 100%);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 30px rgba(0, 210, 255, 0.6),
+        0 0 60px rgba(0, 102, 255, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.6),
+        inset -5px -5px 20px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+}
+
+.core-glow {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: radial-gradient(circle, rgba(0, 210, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulseGlow 3s infinite ease-in-out;
+}
+
+.core-nucleus {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #ffffff 0%, rgba(0, 210, 255, 0.8) 60%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ffffff;
+    filter: blur(2px);
+    opacity: 0.85;
+}
+
+/* State when J.A.R.V.I.S. is generating or speaking */
+.jarvis-core.speaking {
+    animation: voiceThrob 1.2s infinite ease-in-out;
+}
+
+.jarvis-core.speaking .core-glow {
+    animation: voiceGlow 0.6s infinite alternate ease-in-out;
+}
+
+.core-status {
+    margin-top: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    letter-spacing: 3px;
+    text-shadow: 0 0 6px var(--primary-blue);
+    z-index: 2;
+}
+
+/* Tool Log Container (Terminal Alerts) */
+.tool-log-container {
+    position: absolute;
+    top: 75px;
+    right: 25px;
+    width: 320px;
+    max-height: 150px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 8;
+    pointer-events: none;
+}
+
+.tool-alert {
+    background: rgba(5, 12, 24, 0.85);
+    border: 1px solid var(--border-glow);
+    border-left: 3px solid var(--primary-blue);
+    border-radius: 4px;
+    padding: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--primary-blue);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+    animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.5s ease-out;
+}
+
+.tool-alert.success {
+    border-left-color: #00e676;
+    color: #00e676;
+}
+
+/* Chat Console Section */
+.chat-console {
+    height: 280px;
+    border-top: 1px solid var(--border-color);
+    background-color: rgba(13, 21, 38, 0.5);
+    backdrop-filter: blur(15px);
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+}
+
+.messages-log {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Scrollbar for chat */
+.messages-log::-webkit-scrollbar {
+    width: 6px;
+}
+.messages-log::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.system-welcome {
+    border: 1px solid var(--border-color);
+    background: rgba(0, 210, 255, 0.03);
+    border-radius: 4px;
+    padding: 12px 18px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.welcome-title {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.message-bubble {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.message-bubble.user {
+    align-self: flex-end;
+    background: rgba(0, 102, 255, 0.15);
+    border: 1px solid rgba(0, 102, 255, 0.3);
+    color: var(--text-primary);
+    border-bottom-right-radius: 1px;
+}
+
+.message-bubble.assistant {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 210, 255, 0.15);
+    color: var(--text-primary);
+    border-bottom-left-radius: 1px;
+}
+
+.msg-sender {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+}
+
+.user .msg-sender {
+    color: var(--text-secondary);
+    align-self: flex-end;
+}
+
+.assistant .msg-sender {
+    color: var(--primary-blue);
+    text-shadow: 0 0 5px rgba(0, 210, 255, 0.3);
+}
+
+.msg-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.msg-text code {
+    font-family: 'Share Tech Mono', monospace;
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--code-color);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+    border: 1px solid rgba(0, 210, 255, 0.1);
+}
+
+.msg-text pre {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 4px;
+    margin: 8px 0;
+    overflow-x: auto;
+}
+
+.msg-text pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+/* Message Input area */
+.input-container {
+    height: 65px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+    background: rgba(7, 10, 19, 0.8);
+    gap: 15px;
+}
+
+#user-prompt {
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    height: 40px;
+    border-radius: 4px;
+    padding: 0 15px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+#user-prompt:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.25);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.send-btn {
+    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border: none;
+    height: 40px;
+    padding: 0 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.35);
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+.send-btn:active {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes beacon {
+    0%, 100% { opacity: 0.5; box-shadow: 0 0 4px var(--primary-blue); }
+    50% { opacity: 1; box-shadow: 0 0 12px var(--primary-blue); }
+}
+
+@keyframes rotateCW {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotateCCW {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 0.95; }
+}
+
+@keyframes voiceThrob {
+    0%, 100% { transform: scale(1.0); }
+    50% { transform: scale(1.12); }
+}
+
+@keyframes voiceGlow {
+    0% { transform: scale(0.95); opacity: 0.6; filter: blur(3px); }
+    100% { transform: scale(1.25); opacity: 0.95; filter: blur(6px); }
+}
+
+@keyframes slideIn {
+    0% { transform: translateX(100%) scale(0.9); opacity: 0; }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+}

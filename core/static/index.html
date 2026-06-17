@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. local AI assistant</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css?v=2.0">
+</head>
+<body>
+    <div class="jarvis-container">
+        <!-- Dashboard Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="pulse-dot"></span>
+                    <h1>J.A.R.V.I.S.</h1>
+                </div>
+                <div class="tagline">Local Core V1.0</div>
+            </div>
+            
+            <div class="section-title">SYSTEM PROTOCOLS</div>
+            <div class="sys-monitors">
+                <div class="monitor-card" id="cpu-card">
+                    <div class="monitor-label">CPU LOAD</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="cpu-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="monitor-val" id="cpu-val">0%</div>
+                </div>
+                <div class="monitor-card" id="ram-card">
+                    <div class="monitor-label">RAM UTILS</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="ram-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="monitor-val" id="ram-val">0%</div>
+                </div>
+                <div class="monitor-card" id="disk-card">
+                    <div class="monitor-label">DISK TEMP</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="disk-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="monitor-val" id="disk-val">0%</div>
+                </div>
+            </div>
+
+            <div class="section-title">ACTIVE ALERTS</div>
+            <div class="alerts-list" id="alerts-container">
+                <!-- Active timers and alarms loaded dynamically -->
+            </div>
+
+            <div class="section-title">ACTIVE ARCHIVES</div>
+            <div class="session-list" id="sessions-container">
+                <!-- Session items loaded dynamically -->
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="clear-session-btn" class="footer-btn">PURGE MEMORY</button>
+            </div>
+        </aside>
+
+        <!-- Main Interface -->
+        <main class="main-interface">
+            <!-- Top Header Status Panel -->
+            <header class="header-status">
+                <div class="system-status-indicator">
+                    <span class="status-indicator online"></span>
+                    <span id="status-text">COGNITIVE STATUS: ONLINE</span>
+                </div>
+                
+                <!-- Voice toggle buttons -->
+                <div class="controls-panel">
+                    <button id="voice-toggle" class="control-btn active" title="Toggle Speech Output">
+                        SPEECH: ENABLED
+                    </button>
+                </div>
+            </header>
+
+            <!-- Interactive Core Area -->
+            <section class="core-stage">
+                <div class="hologram-grid"></div>
+                <div class="core-orbit">
+                    <!-- Multiple glowing outer SVG rings -->
+                    <div class="ring outer-ring"></div>
+                    <div class="ring mid-ring"></div>
+                    <div class="ring inner-ring"></div>
+                    
+                    <!-- The J.A.R.V.I.S. Core Sphere -->
+                    <div class="jarvis-core" id="jarvis-core-sphere">
+                        <div class="core-glow"></div>
+                        <div class="core-nucleus"></div>
+                    </div>
+                </div>
+                <div class="core-status" id="core-state-label">CORE IDLE</div>
+            </section>
+
+            <!-- Dynamic Tool Registry Notification Panel -->
+            <div class="tool-log-container" id="tool-log">
+                <!-- Tool alerts fade in here -->
+            </div>
+
+            <!-- Chat Console Box -->
+            <section class="chat-console">
+                <div class="messages-log" id="messages-log">
+                    <div class="system-welcome">
+                        <div class="welcome-title">INITIALIZATION COMPLETE</div>
+                        <p>Welcome back, sir. Neural link established. The local core engine is fully loaded and ready to assist you. Voice feedback is active.</p>
+                    </div>
+                </div>
+
+                <!-- Input controller -->
+                <div class="input-container">
+                    <input type="text" id="user-prompt" placeholder="Formulate command..." autocomplete="off">
+                    <button id="send-btn" class="send-btn">
+                        <span>TRANSMIT</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js?v=2.0"></script>
+</body>
+</html>

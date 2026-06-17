@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  jarvis-core:
+    build: .
+    container_name: jarvis-core
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./tools:/app/tools
+      # Mount the workspace folder from settings (with a fallback)
+      - ${WORKSPACE_DIR:-C:/Users/Hemanth/SecureJarvisBotWorkspace}:/app/workspace
+    env_file:
+      - .env
+    environment:
+      - WORKSPACE_DIR=/app/workspace
+      - DATABASE_PATH=/app/data/jarvis.db
+      - VECTOR_DB_PATH=/app/data/vectors.json
+      - DATA_DIR=/app/data
+      # When running inside docker, default Ollama url should point to the host machine
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
